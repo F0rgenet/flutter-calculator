@@ -9,8 +9,16 @@ class Stack<Type> {
     return _items.removeLast();
   }
 
-  bool isEmpty() {
+  bool get isEmpty {
     return _items.isEmpty;
+  }
+
+  bool get isNotEmpty {
+    return _items.isNotEmpty;
+  }
+
+  Type peek() {
+    return _items.last;
   }
 
   @override

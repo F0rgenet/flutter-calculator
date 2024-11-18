@@ -1,4 +1,6 @@
-import 'package:calculator/utils/tokenizer.dart';
+import 'package:calculator/core/utils/tokenizer.dart';
+import 'package:calculator/core/models/token.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -81,5 +83,43 @@ void main() {
       expect(token.type, TokenType.illegal);
       expect(token.literal, "a");
     });
+
+    test("should return tokens", () {
+      final tokenizer = Tokenizer();
+      final tokens = tokenizer.tokenize("1 + 2* (3^ 4)    / 2");
+      expect(tokens, [
+        Token(TokenType.number, "1"),
+        Token(TokenType.plus, "+"),
+        Token(TokenType.number, "2"),
+        Token(TokenType.multiply, "*"),
+        Token(TokenType.leftParenthesis, "("),
+        Token(TokenType.number, "3"),
+        Token(TokenType.power, "^"),
+        Token(TokenType.number, "4"),
+        Token(TokenType.rightParenthesis, ")"),
+        Token(TokenType.divide, "/"),
+        Token(TokenType.number, "2"),
+      ]);
+    });
+
+    test("should return single token", () {
+      final tokenizer = Tokenizer();
+      final tokens = tokenizer.tokenize("1");
+      expect(tokens, [
+        Token(TokenType.number, "1"),
+      ]);
+    });
+    test("should return single tokens", () {
+      final tokenizer = Tokenizer();
+      final tokens = tokenizer.tokenize("+");
+      expect(tokens, [
+        Token(TokenType.plus, "+"),
+      ]);
+      final tokens2 = tokenizer.tokenize("-");
+      expect(tokens2, [
+        Token(TokenType.minus, "-"),
+      ]);
+    }
+    );
   });
 }

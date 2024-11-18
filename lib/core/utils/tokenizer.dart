@@ -1,34 +1,8 @@
-enum TokenType {
-  number,
-  plus,
-  minus,
-  multiply,
-  divide,
-  power,
-  leftParenthesis,
-  rightParenthesis,
-  endOfInput,
-  illegal
-}
-
-class Token {
-  TokenType type;
-  String literal;
-
-  Token(this.type, this.literal);
-}
+import 'package:calculator/core/models/token.dart';
 
 class Tokenizer {
   String input = "";
   int position = 0;
-
-  static const Map<TokenType, int> _precedence = {
-    TokenType.plus: 1,
-    TokenType.minus: 1,
-    TokenType.multiply: 2,
-    TokenType.divide: 2,
-    TokenType.power: 3,
-  };
 
   Token readNumber() {
     int start = position;
@@ -47,6 +21,11 @@ class Tokenizer {
   Token nextToken() {
     if (position >= input.length) {
       return Token(TokenType.endOfInput, "");
+    }
+
+    if (input[position] == " ") {
+      position++;
+      return Token(TokenType.whitespace, " ");
     }
 
     String literal = input[position];
@@ -87,7 +66,20 @@ class Tokenizer {
     return Token(type, literal);
   }
 
-  int getPrecedence(TokenType type) {
-    return _precedence[type] ?? 0;
+  List<Token> tokenize(String input) {
+    position = 0;
+    this.input = input;
+    final List<Token> tokens = [];
+    while (position < input.length) {
+      Token token = nextToken();
+      if (token.type == TokenType.illegal) {
+        throw Exception("Invalid token: '${token.literal}'");
+      }
+      if (token.type == TokenType.whitespace) {
+        continue;
+      }
+      tokens.add(token);
+    }
+    return tokens;
   }
 }
