@@ -24,8 +24,8 @@
 2. Клонируйте репозиторий:
 
    ```bash
-   git clone <ссылка на репозиторий>
-   cd <папка репозитория>
+   git clone https://github.com/F0rgenet/flutter-calculator.git
+   cd flutter-calculator
    ```
 
 3. Установите зависимости:
